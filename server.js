@@ -39,4 +39,9 @@ server.get('/tweets', (req, res) => {
     res.send(tweets.slice(-10, ));
 });
 
+server.get('/tweets/:username', (req, res) => {
+    const username = req.params.username;
+    res.send(tweets.filter((tweet) => {return tweet.username === username}));
+})
+
 server.listen(5000);
