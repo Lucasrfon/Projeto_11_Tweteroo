@@ -14,8 +14,15 @@ server.post('/sign-up', (req, res) => {
 });
 
 server.post('/tweets', (req, res) => {
-    tweets.push(req.body);
+    function findAvatar(object) {
+        return object.username === req.body.username;
+    }
+    tweets.push({...req.body, "avatar": users.find(findAvatar).avatar});
     res.send("OK");
+});
+
+server.get('/tweets', (req, res) => {
+    res.send(tweets.slice(-10, ));
 });
 
 server.listen(5000);
