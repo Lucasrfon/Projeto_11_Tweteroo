@@ -21,16 +21,16 @@ server.post('/sign-up', (req, res) => {
 });
 
 server.post('/tweets', (req, res) => {
-    const badUsername = typeof(req.body.username) !== "string" || req.body.username.trim().length <= 0;;
+    const badUsername = typeof(req.header("User")) !== "string" || req.header("User").trim().length <= 0;;
     const badTweet = typeof(req.body.tweet) !== "string" || req.body.tweet.trim().length <= 0;
 
     if(badUsername || badTweet) {
         res.status(400).send("Todos os campos são obrigatórios!");
     } else {
         function findAvatar(object) {
-            return object.username === req.body.username;
+            return object.username === req.header("User");
         }
-        tweets.push({...req.body, "avatar": users.find(findAvatar).avatar});
+        tweets.push({...req.body, ...users.find(findAvatar)});
         res.status(201).send("OK");
     }
 });
@@ -40,10 +40,10 @@ server.get("/tweets", (req, res) => {
     let tweetsStart = page * -10;
     let tweetsEnd = (page -1) * -10;
     if(page > 1) {
-        res.send(tweets.slice(tweetsStart, tweetsEnd));
+        res.send(tweets.slice(tweetsStart, tweetsEnd).reverse());
     }
     else if (page === 1) {
-        res.send(tweets.slice(tweetsStart, ));
+        res.send(tweets.slice(tweetsStart, ).reverse());
     } else {
         res.status(400).send("Informe uma página válida!");
     }
