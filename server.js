@@ -35,8 +35,19 @@ server.post('/tweets', (req, res) => {
     }
 });
 
-server.get('/tweets', (req, res) => {
-    res.send(tweets.slice(-10, ));
+server.get("/tweets", (req, res) => {
+    let page = parseInt(req.query.page);
+    let tweetsStart = page * -10;
+    let tweetsEnd = (page -1) * -10;
+    if(page > 1) {
+        res.send(tweets.slice(tweetsStart, tweetsEnd));
+    }
+    else if (page === 1) {
+        res.send(tweets.slice(tweetsStart, ));
+    } else {
+        res.status(400).send("Informe uma página válida!");
+    }
+    
 });
 
 server.get('/tweets/:username', (req, res) => {
