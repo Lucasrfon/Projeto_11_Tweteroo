@@ -16,7 +16,7 @@ server.post('/sign-up', (req, res) => {
         res.status(400).send("Todos os campos são obrigatórios!");
     } else {
         users.push(req.body);
-        res.send("OK");
+        res.status(201).send("OK");
     }
 });
 
@@ -31,7 +31,7 @@ server.post('/tweets', (req, res) => {
             return object.username === req.body.username;
         }
         tweets.push({...req.body, "avatar": users.find(findAvatar).avatar});
-        res.send("OK");
+        res.status(201).send("OK");
     }
 });
 
